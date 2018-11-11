@@ -25,7 +25,7 @@ public class PlayScreen implements Screen {
         gamePort = new ScreenViewport(camera);
         camera.position.set(gamePort.getWorldWidth() / 2, gamePort.getWorldHeight() / 2, 0);
         TextureLoader.TextureParameter param = new TextureLoader.TextureParameter();
-        testTexture = new Texture(Gdx.files.internal("E:\\Dev\\Workspaces\\Taquin\\images\\puma.jpg"));
+        testTexture = new Texture(Gdx.files.internal("images\\puma.jpg"));
     }
     @Override
     public void show() {
