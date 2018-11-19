@@ -9,9 +9,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
-import com.sun.prism.image.ViewPort;
 import com.to52.taquin.TaquinGame;
 import com.to52.taquin.Tuile;
 
@@ -34,9 +32,9 @@ public class PlayScreen implements Screen {
         camera = new OrthographicCamera();
         gamePort = new ScreenViewport(camera);
         camera.position.set(gamePort.getWorldWidth() / 2, gamePort.getWorldHeight() / 2, 0);
-        TextureLoader.TextureParameter param = new TextureLoader.TextureParameter();
         testTexture = new Texture(Gdx.files.internal("images\\shrek.jpeg"));
         stage = new Stage();
+        Gdx.input.setInputProcessor(stage);
         generatePuzzle(ligne,colonne);
     }
     @Override
@@ -49,26 +47,26 @@ public class PlayScreen implements Screen {
         Gdx.gl.glClearColor(1, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         camera.update();
-        game.batch.begin();
-
+        stage.act();
+        stage.draw();
+        //game.batch.begin();
         //game.batch.draw(testTexture, 0,0);
-        int i = 0; //utilisé pour placé les tuiles en longueurs
-        int j = 0; //utilisé pour placé les tuiles en largeurs
-        int k = 0; //utilisé pour savoir quand changer de colonne
-        for (Tuile t : listeTuile){
-            if (k == colonne){
-                j += t.largeur;
-                k=0;
-                i=0;
-            }
-            game.batch.draw(tuilePuzzle[t.ligne][t.colonne], i, j); // dessine la tuile au bon endroit
+        //int i = 0; //utilisé pour placé les tuiles en longueurs
+        //int j = 0; //utilisé pour placé les tuiles en largeurs
+        //int k = 0; //utilisé pour savoir quand changer de colonne
+        //for (Tuile t : listeTuile){
+        //    if (k == colonne){
+        //        j += t.largeur;
+        //        k=0;
+        //        i=0;
+        //    }
+        //    game.batch.draw(tuilePuzzle[t.ligne][t.colonne], i, j); // dessine la tuile au bon endroit
 
-            i += t.longueur;
-            k++;
-        }
-        //stage.act();
-        //stage.draw();
-        game.batch.end();
+        //    i += t.longueur;
+        //    k++;
+        //}
+
+        //game.batch.end();
 }
 
     @Override
@@ -108,13 +106,13 @@ public class PlayScreen implements Screen {
          for (TextureRegion[] tr : tuilePuzzle) {
              for (TextureRegion t : tr) {
                  if (tmpcolonne%(colonne-1) == 0 && tmpcolonne != 0){
-                     Tuile tmptuile = new Tuile(t.getTexture(), tmpligne, tmpcolonne, tuileLongueur, tuileLargeur);
+                     Tuile tmptuile = new Tuile(t, tmpligne, tmpcolonne, tuileLongueur, tuileLargeur);
                      listeTuile.add(tmptuile);
                      stage.addActor(tmptuile);
                      tmpcolonne = 0;
                      tmpligne++;
                  }else{
-                     Tuile tmptuile = new Tuile(t.getTexture(), tmpligne, tmpcolonne, tuileLongueur, tuileLargeur);
+                     Tuile tmptuile = new Tuile(t, tmpligne, tmpcolonne, tuileLongueur, tuileLargeur);
                      listeTuile.add(tmptuile);
                      stage.addActor(tmptuile);
                      tmpcolonne++;

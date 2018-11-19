@@ -1,6 +1,6 @@
 package com.to52.taquin;
 
-import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.DragListener;
@@ -9,7 +9,7 @@ public class Tuile extends Image {
 
     public int ligne, colonne, longueur, largeur;
 
-    public Tuile(Texture texture, int ligne, int colonne, int longueur, int largeur){
+    public Tuile(TextureRegion texture, int ligne, int colonne, int longueur, int largeur){
         super(texture);
         this.ligne = ligne;
         this.colonne = colonne;
