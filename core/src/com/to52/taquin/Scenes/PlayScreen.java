@@ -1,36 +1,35 @@
 package com.to52.taquin.Scenes;
 
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.assets.loaders.TextureLoader;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.to52.taquin.TaquinGame;
 import com.to52.taquin.Tuile;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 
 public class PlayScreen implements Screen {
     private TaquinGame game;
     private OrthographicCamera camera;
-    private ScreenViewport gamePort;
+    private StretchViewport gamePort;
     private Texture testTexture;
     private TextureRegion[][] tuilePuzzle;
     public ArrayList<Tuile> listeTuile = new ArrayList<Tuile>();
     private Stage stage;
-    private int colonne = 3;
-    private int ligne = 3;
+    private int colonne = 5;
+    private int ligne = 5;
 
     public PlayScreen(TaquinGame game){
         this.game = game;
         camera = new OrthographicCamera();
-        gamePort = new ScreenViewport(camera);
+        gamePort = new StretchViewport(1280,720,camera);
         camera.position.set(gamePort.getWorldWidth() / 2, gamePort.getWorldHeight() / 2, 0);
         testTexture = new Texture(Gdx.files.internal("images\\shrek.jpeg"));
         stage = new Stage();
@@ -44,34 +43,19 @@ public class PlayScreen implements Screen {
 
     @Override
     public void render(float delta) {
-        Gdx.gl.glClearColor(1, 0, 0, 1);
+        Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         camera.update();
         stage.act();
         stage.draw();
-        //game.batch.begin();
-        //game.batch.draw(testTexture, 0,0);
-        //int i = 0; //utilisé pour placé les tuiles en longueurs
-        //int j = 0; //utilisé pour placé les tuiles en largeurs
-        //int k = 0; //utilisé pour savoir quand changer de colonne
-        //for (Tuile t : listeTuile){
-        //    if (k == colonne){
-        //        j += t.largeur;
-        //        k=0;
-        //        i=0;
-        //    }
-        //    game.batch.draw(tuilePuzzle[t.ligne][t.colonne], i, j); // dessine la tuile au bon endroit
-
-        //    i += t.longueur;
-        //    k++;
-        //}
-
-        //game.batch.end();
 }
 
     @Override
     public void resize(int width, int height) {
-        gamePort.update(width, height);
+
+        gamePort.update(width, height, true);
+        stage.setViewport(gamePort);
+
     }
 
     @Override
@@ -91,7 +75,7 @@ public class PlayScreen implements Screen {
 
     @Override
     public void dispose() {
-
+        stage.dispose();
     }
 
     //methode permettant de generer les tuiles en creant les objets necessaire et en les stockant dans une liste
@@ -119,6 +103,18 @@ public class PlayScreen implements Screen {
                  }
              }
          }
+         shuffleAndPlace(listeTuile, ligne, colonne);
     }
 
+    //methode utilisé pour mélanger les tuiles et les placer
+    private void shuffleAndPlace(ArrayList<Tuile> liste, int ligne, int colonne){
+        Collections.shuffle(liste);
+        for (Tuile t : liste){
+            int index = liste.indexOf(t);
+            int x = index%ligne;
+            int y = index/colonne;
+            t.updatePos(x, y);
+        }
+
+    }
 }
