@@ -19,7 +19,7 @@ public class Tuile extends Image {
         addListener(new DragListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-
+                toFront(); // met la tuile en premier plan lorsqu'on la déplace
                 return true;
 
             }
@@ -28,6 +28,12 @@ public class Tuile extends Image {
             public void touchDragged(InputEvent event, float x, float y, int pointer) {
                 moveBy(x - getWidth()/2, y - getHeight()/2);
 
+
+            }
+            @Override
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button){
+                //Tuile touche = (Tuile) hit(x,y,true);
+                //System.out.println(touche.colonne + " " +  touche.ligne);
             }
         });
     }
@@ -35,6 +41,6 @@ public class Tuile extends Image {
     public void updatePos(int ligne, int colonne){
         this.ligne = ligne;
         this.colonne = colonne;
-        setPosition(getWidth()*colonne, getHeight()*ligne);
+        setPosition(getWidth()*(colonne+1), getHeight()*(ligne+1));
     }
 }

@@ -20,6 +20,7 @@ public class PlayScreen implements Screen {
     private OrthographicCamera camera;
     private StretchViewport gamePort;
     private Texture testTexture;
+    private Texture background;
     private TextureRegion[][] tuilePuzzle;
     public ArrayList<Tuile> listeTuile = new ArrayList<Tuile>();
     private Stage stage;
@@ -32,6 +33,7 @@ public class PlayScreen implements Screen {
         gamePort = new StretchViewport(1280,720,camera);
         camera.position.set(gamePort.getWorldWidth() / 2, gamePort.getWorldHeight() / 2, 0);
         testTexture = new Texture(Gdx.files.internal("images\\shrek.jpeg"));
+        background = new Texture(Gdx.files.internal("background.jpg"));
         stage = new Stage();
         Gdx.input.setInputProcessor(stage);
         generatePuzzle(ligne,colonne);
@@ -47,6 +49,12 @@ public class PlayScreen implements Screen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         camera.update();
         stage.act();
+        stage.getBatch().begin();
+        stage.getBatch().draw(background,0,0);
+        stage.getBatch().draw(testTexture,
+                            testTexture.getWidth() + 2*(testTexture.getWidth()/colonne),
+                            (gamePort.getWorldHeight()-testTexture.getHeight()) / 2);
+        stage.getBatch().end();
         stage.draw();
 }
 
