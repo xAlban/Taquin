@@ -23,9 +23,10 @@ public class PlayScreen implements Screen {
     private Texture background;
     private TextureRegion[][] tuilePuzzle;
     public ArrayList<Tuile> listeTuile = new ArrayList<Tuile>();
+    public ArrayList<Tuile> solution = new ArrayList<Tuile>();
     private Stage stage;
-    private int colonne = 5;
-    private int ligne = 5;
+    private int colonne = 3;
+    private int ligne = 3;
 
     public PlayScreen(TaquinGame game){
         this.game = game;
@@ -47,6 +48,10 @@ public class PlayScreen implements Screen {
     public void render(float delta) {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        //if(checkFinish()){
+        //    System.out.println(checkFinish());
+        //}
+
         camera.update();
         stage.act();
         stage.getBatch().begin();
@@ -95,22 +100,26 @@ public class PlayScreen implements Screen {
                 tuileLargeur);
          int tmpligne = 0;
          int tmpcolonne =0;
+         int ordre = 0;
          for (TextureRegion[] tr : tuilePuzzle) {
              for (TextureRegion t : tr) {
                  if (tmpcolonne%(colonne-1) == 0 && tmpcolonne != 0){
-                     Tuile tmptuile = new Tuile(t, tmpligne, tmpcolonne, tuileLongueur, tuileLargeur);
-                     listeTuile.add(tmptuile);
+                     Tuile tmptuile = new Tuile(t, tmpligne, tmpcolonne, tuileLongueur, tuileLargeur, ordre, this);
+                     solution.add(tmptuile);
                      stage.addActor(tmptuile);
                      tmpcolonne = 0;
                      tmpligne++;
+                     ordre++;
                  }else{
-                     Tuile tmptuile = new Tuile(t, tmpligne, tmpcolonne, tuileLongueur, tuileLargeur);
-                     listeTuile.add(tmptuile);
+                     Tuile tmptuile = new Tuile(t, tmpligne, tmpcolonne, tuileLongueur, tuileLargeur, ordre, this);
+                     solution.add(tmptuile);
                      stage.addActor(tmptuile);
                      tmpcolonne++;
+                     ordre++;
                  }
              }
          }
+         listeTuile = (ArrayList<Tuile>) solution.clone();
          shuffleAndPlace(listeTuile, ligne, colonne);
     }
 
@@ -124,5 +133,20 @@ public class PlayScreen implements Screen {
             t.updatePos(x, y);
         }
 
+    }
+
+    private boolean checkFinish(){
+        boolean finish = false;
+        int i = 0;
+        for (Tuile t : listeTuile){
+            if (t.solution != solution.get(i).solution){
+                finish = false;
+                break;
+            }else {
+                finish = true;
+            }
+            i++;
+        }
+        return finish;
     }
 }
