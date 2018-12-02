@@ -5,8 +5,12 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.to52.taquin.TaquinGame;
 import com.to52.taquin.Tuile;
@@ -27,6 +31,7 @@ public class PlayScreen implements Screen {
     private Stage stage;
     private int colonne = 3;
     private int ligne = 3;
+    private TextButton melanger;
 
     public PlayScreen(TaquinGame game){
         this.game = game;
@@ -38,6 +43,20 @@ public class PlayScreen implements Screen {
         stage = new Stage();
         Gdx.input.setInputProcessor(stage);
         generatePuzzle(ligne,colonne);
+
+        TextButton.TextButtonStyle style = new TextButton.TextButtonStyle();
+        style.font = new BitmapFont();
+        melanger = new TextButton("MELANGER",style);
+        melanger.setPosition(40,690);
+        melanger.setHeight(20);
+        melanger.setWidth(20);
+        melanger.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y){
+                shuffleAndPlace(listeTuile, ligne, colonne);
+            }
+        });
+        stage.addActor(melanger);
     }
     @Override
     public void show() {
