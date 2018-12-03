@@ -8,6 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.DragListener;
 import com.to52.taquin.Scenes.PlayScreen;
 
+import java.util.ArrayList;
 import java.util.Collections;
 
 public class Tuile extends Image {
@@ -45,33 +46,7 @@ public class Tuile extends Image {
             public void touchUp(InputEvent event, float x, float y, int pointer, int button){
                 //Tuile touche = (Tuile) hit(x,y,true);
                 //System.out.println(x + " " +  y + "stage "+ getX() + " " + getY());
-                float realX = getX() + getWidth()/2;
-                float realY = getY() + getHeight()/2;
-                boolean changed = false;
-                for (Tuile t : screen.listeTuile){
-                    if (t.ligne == ligne && t.colonne == colonne){
-
-                    }else{
-                        Vector2 coinBas = new Vector2(t.getX(), t.getY());
-                        Vector2 coinHaut= new Vector2(t.getX()+t.getWidth(), t.getY()+t.getHeight());
-                        if (realX <= coinHaut.x && realY <= coinHaut.y && realX >= coinBas.x && realY >= coinBas.y){
-                            int tmpligne = t.ligne;
-                            int tmpcolonne = t.colonne;
-                            t.updatePos(ligne, colonne);
-                            updatePos(tmpligne, tmpcolonne);
-                            Collections.swap(screen.listeTuile, screen.listeTuile.indexOf(t), screen.listeTuile.indexOf(Tuile.this));
-                            //for (Tuile tu : screen.listeTuile){
-                            //    System.out.println("ordre : "+tu.solution);
-                            //    System.out.println("solution : " + screen.solution.indexOf(tu));
-                            //}
-                            //System.out.println("------------------------------------------------");
-                            changed = true;
-                        }
-                    }
-                }
-                if (changed == false){
-                    setPosition(beforeX, beforeY);
-                }
+                swapTuile(screen.listeTuile);
             }
         });
     }
@@ -79,6 +54,38 @@ public class Tuile extends Image {
     public void updatePos(int ligne, int colonne){
         this.ligne = ligne;
         this.colonne = colonne;
-        setPosition(getWidth()*(colonne+1), getHeight()*(ligne+1));
+        setPosition((float)((getWidth()*colonne) + ((screen.getGamePort().getWorldWidth()-(screen.testTexture.getWidth()*2.2))/2)),
+                (getHeight()*ligne) + ((screen.getGamePort().getWorldHeight()-screen.testTexture.getHeight())/2));
+    }
+
+    //methode pour echanger les tuiles de place ou remettre la tuile a sa place
+    private void swapTuile(ArrayList<Tuile> liste){
+        float realX = getX() + getWidth()/2;
+        float realY = getY() + getHeight()/2;
+        boolean changed = false;
+        for (Tuile t : liste){
+            if (t.ligne == ligne && t.colonne == colonne){
+
+            }else{
+                Vector2 coinBas = new Vector2(t.getX(), t.getY());
+                Vector2 coinHaut= new Vector2(t.getX()+t.getWidth(), t.getY()+t.getHeight());
+                if (realX <= coinHaut.x && realY <= coinHaut.y && realX >= coinBas.x && realY >= coinBas.y){
+                    int tmpligne = t.ligne;
+                    int tmpcolonne = t.colonne;
+                    t.updatePos(ligne, colonne);
+                    updatePos(tmpligne, tmpcolonne);
+                    Collections.swap(liste, liste.indexOf(t), liste.indexOf(Tuile.this));
+                    //for (Tuile tu : screen.listeTuile){
+                    //    System.out.println("ordre : "+tu.solution);
+                    //    System.out.println("solution : " + screen.solution.indexOf(tu));
+                    //}
+                    //System.out.println("------------------------------------------------");
+                    changed = true;
+                }
+            }
+        }
+        if (changed == false){
+            setPosition(beforeX, beforeY);
+        }
     }
 }
