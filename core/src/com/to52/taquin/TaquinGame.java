@@ -1,6 +1,7 @@
 package com.to52.taquin;
 
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.to52.taquin.Scenes.*;
 
@@ -10,7 +11,7 @@ public class TaquinGame extends Game {
 	@Override
 	public void create () {
 		batch = new SpriteBatch();
-		setScreen(new PlayScreen(this));
+		setScreen(new FirstScreen(this));
 	}
 
 	@Override
