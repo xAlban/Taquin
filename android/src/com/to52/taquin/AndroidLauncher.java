@@ -4,7 +4,7 @@ import android.os.Bundle;
 
 import com.badlogic.gdx.backends.android.AndroidApplication;
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
-import com.to52.taquin.TaquinGame;
+import com.to52.taquin.PuzzleGame;
 
 public class AndroidLauncher extends AndroidApplication {
 	@Override
@@ -14,6 +14,6 @@ public class AndroidLauncher extends AndroidApplication {
 		config.useCompass = false;
 		config.useAccelerometer = false;
 		config.useGyroscope = false;
-		initialize(new TaquinGame(), config);
+		initialize(new PuzzleGame(), config);
 	}
 }

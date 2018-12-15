@@ -1,6 +1,5 @@
 package com.to52.taquin.Scenes;
 
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -11,32 +10,42 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
-import com.to52.taquin.TaquinGame;
+import com.to52.taquin.PuzzleGame;
 
 public class FirstScreen implements Screen {
-    private TaquinGame game;
+    //variable de structure libGDX
+    private PuzzleGame game;
     private OrthographicCamera camera;
     private StretchViewport gamePort;
+
+    //variable utilitaire
     private Texture background;
     private TextButton jouer;
     private Stage stage;
+    private String buttonLabel;
 
-    public FirstScreen(TaquinGame game){
+    public FirstScreen(PuzzleGame game, String buttonLabel){
         this.game = game;
         camera = new OrthographicCamera();
         gamePort = new StretchViewport(1280,720,camera);
         camera.position.set(gamePort.getWorldWidth() / 2, gamePort.getWorldHeight() / 2, 0);
+
         background = new Texture(Gdx.files.internal("background.jpg"));
+        this.buttonLabel = buttonLabel;
         stage = new Stage();
         Gdx.input.setInputProcessor(stage);
+
         createButton();
     }
 
+    /**
+     * Création du boutons pour lancer une partie
+     */
     private void createButton() {
         TextButton.TextButtonStyle style = new TextButton.TextButtonStyle();
         style.font = new BitmapFont();
-        jouer = new TextButton("JOUER", style);
-        jouer.setPosition(gamePort.getWorldWidth()/2, gamePort.getWorldHeight()/2);
+        jouer = new TextButton(buttonLabel, style);
+        jouer.setPosition(gamePort.getWorldWidth()/2 - jouer.getWidth(), gamePort.getWorldHeight()/2 + jouer.getHeight()/2);
         jouer.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y){
@@ -44,6 +53,8 @@ public class FirstScreen implements Screen {
                 dispose();
             }
         });
+        jouer.setTransform(true);
+        jouer.setScale(2f);
         stage.addActor(jouer);
     }
 
