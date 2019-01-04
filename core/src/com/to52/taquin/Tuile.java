@@ -14,16 +14,13 @@ import java.util.Collections;
 
 public class Tuile extends Image {
 
-    private int ligne, colonne, beforeLigne, beforeColonne, longueur, largeur, solution;
-    private float beforeX, beforeY;
+    private int ligne, colonne, beforeLigne, beforeColonne, solution;
     private PlayScreen screen;
 
-    public Tuile(TextureRegion texture, int ligne2, int colonne2, int longueur2, int largeur2, int solution2, PlayScreen screen2){
+    public Tuile(TextureRegion texture, int ligne2, int colonne2, int solution2, PlayScreen screen2){
         super(texture);
         this.ligne = ligne2;
         this.colonne = colonne2;
-        this.longueur = longueur2;
-        this.largeur = largeur2;
         this.screen = screen2;
         this.solution = solution2;
         //ajout de listener permettant de déplacer la tuile
@@ -31,8 +28,6 @@ public class Tuile extends Image {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 toFront(); // met la tuile en premier plan lorsqu'on la déplace
-                beforeX = getX();
-                beforeY= getY();
                 return true;
 
             }
@@ -106,6 +101,7 @@ public class Tuile extends Image {
 
     /**
      * Verification de la résolution du Puzzle
+     * @return boolean
      */
     private boolean checkFinish(){
         boolean finish = true;

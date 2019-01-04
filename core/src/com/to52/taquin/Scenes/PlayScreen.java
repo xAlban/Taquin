@@ -119,14 +119,14 @@ public class PlayScreen implements Screen {
          for (TextureRegion[] tr : tuilePuzzle) {
              for (TextureRegion t : tr) {
                  if (tmpcolonne%(colonne-1) == 0 && tmpcolonne != 0){
-                     Tuile tmptuile = new Tuile(t, tmpligne, tmpcolonne, tuileLongueur, tuileLargeur, ordre, this);
+                     Tuile tmptuile = new Tuile(t, tmpligne, tmpcolonne, ordre, this);
                      solution.add(tmptuile);
                      stage.addActor(tmptuile);
                      tmpcolonne = 0;
                      tmpligne++;
                      ordre++;
                  }else{
-                     Tuile tmptuile = new Tuile(t, tmpligne, tmpcolonne, tuileLongueur, tuileLargeur, ordre, this);
+                     Tuile tmptuile = new Tuile(t, tmpligne, tmpcolonne, ordre, this);
                      solution.add(tmptuile);
                      stage.addActor(tmptuile);
                      tmpcolonne++;
